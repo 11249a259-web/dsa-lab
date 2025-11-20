@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for linked list (for chaining)
+struct Node {
+    int key;
+    struct Node* next;
+};
+
+// Hash table size
+#define TABLE_SIZE 10
+
+// Hash function
+int hashFunction(int key) {
+    return key % TABLE_SIZE;
+}
+
+// Insert key into hash table
+void insert(struct Node* hashTable[], int key) {
+    int index = hashFunction(key);
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->key = key;
+    newNode->next = hashTable[index];
+    hashTable[index] = newNode;
+}
+
+// Search for a key
+int search(struct Node* hashTable[], int key) {
+    int index = hashFunction(key);
+    struct Node* temp = hashTable[index];
+    while (temp != NULL) {
+        if (temp->key == key)
+            return 1; // Found
+        temp = temp->next;
+    }
+    return 0; // Not found
+}
+
+// Display the hash table
+void display(struct Node* hashTable[]) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        printf("Bucket %d: ", i);
+        struct Node* temp = hashTable[i];
+        while (temp != NULL) {
+            printf("%d -> ", temp->key);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+int main() {
+    // Initialize hash table
+    struct Node* hashTable[TABLE_SIZE] = {NULL};
+
+    // Insert keys
+    insert(hashTable, 15);
+    insert(hashTable, 25);
+    insert(hashTable, 35);
+    insert(hashTable, 5);
+    insert(hashTable, 12);
+
+    printf("Hash Table:\n");
+    display(hashTable);
+
+    // Search keys
+    int key = 25;
+    if (search(hashTable, key))
+        printf("Key %d found in hash table.\n", key);
+    else
+        printf("Key %d not found in hash table.\n", key);
+
+    key = 99;
+    if (search(hashTable, key))
+        printf("Key %d found in hash table.\n", key);
+    else
+        printf("Key %d not found in hash table.\n", key);
+
+    return 0;
+}
