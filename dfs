@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Preorder DFS (Root, Left, Right)
+void dfsPreorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        dfsPreorder(root->left);
+        dfsPreorder(root->right);
+    }
+}
+
+// Inorder DFS (Left, Root, Right)
+void dfsInorder(struct Node* root) {
+    if (root != NULL) {
+        dfsInorder(root->left);
+        printf("%d ", root->data);
+        dfsInorder(root->right);
+    }
+}
+
+// Postorder DFS (Left, Right, Root)
+void dfsPostorder(struct Node* root) {
+    if (root != NULL) {
+        dfsPostorder(root->left);
+        dfsPostorder(root->right);
+        printf("%d ", root->data);
