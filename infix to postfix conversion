@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+// Stack operations
+void push(char x) {
+    stack[++top] = x;
+}
+
+char pop() {
+    if (top == -1)
+        return -1;
+    else
+        return stack[top--];
+}
+
+// Function to set precedence of operators
+int precedence(char x) {
+    if (x == '(')
+        return 0;
+    if (x == '+' || x == '-')
+        return 1;
+    if (x == '*' || x == '/')
+        return 2;
+    if (x == '^')
+        return 3;
+    return 0;
+}
+
+int main() {
+    char exp[MAX], x;
+    int i = 0, j = 0;
+    char postfix[MAX];
+
+    printf("Enter infix expression: ");
+    scanf("%s", exp);
+
+    while (exp[i] != '\0') {
+        // If operand, add to postfix
