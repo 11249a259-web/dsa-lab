@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Queue node structure for BFS
+struct QueueNode {
+    struct Node* treeNode;
+    struct QueueNode* next;
+};
+
+// Queue structure
+struct Queue {
+    struct QueueNode *front, *rear;
+};
+
+// Function to create an empty queue
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+// Enqueue operation
+void enqueue(struct Queue* q, struct Node* node) {
+    struct QueueNode* temp = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    temp->treeNode = node;
+    temp->next = NULL;
+    if (q->rear == NULL) {
+        q->front = q->rear = temp;
+        return;
+    }
+    q->rear->next = temp;
+    q->rear = temp;
+}
+
+// Dequeue operation
+struct Node* dequeue(struct Queue* q) {
+    if (q->front == NULL)
+        return NULL;
+    struct QueueNode* t*
