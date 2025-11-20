@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+// Create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Insert at beginning
+void insertBeginning(int value) {
+    struct Node* newNode = createNode(value);
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    newNode->next = head;
+    head->prev = newNode;
+    head = newNode;
+}
+
+// Insert at end
+void insertEnd(int value) {
+    struct Node* newNode = createNode(value);
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Insert at a given position (1-based index)
+void insertAtPosition(int value, int position) {
+    if (position == 1) {
+        insertBeginning(value);
+        return;
+    }
+
+    struct Node* newNode = createNode(value);
+    struct Node* temp = head;
+
+    for (int i = 1; temp != NULL && i < position - 1; i++)
+        temp = temp->next;
+
+    if (temp == NULL) {
+        printf("Invalid position.\n");
+        free(newNode);
+        return;
+    }
+
+    newNode->next = temp->next;
+    newNode->prev = temp;
+
+    if (temp->next != NULL)
+        temp->next->prev = newNode;
+
+    temp->next = newNode;
+}
+
+// Display list forward
+void display() {
+    struct Node* temp = head;
+    printf("List (forward): ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    insertBeginning(30);
+    insertBeginning(20);
+    insertBeginning(10);
+
+    display();
+
+    insertEnd(40);
+    insertEnd(50);
+    display();
+
+    insertAtPosition(25, 3);  // Insert at position 3
+    display();
+
+    insertAtPosition(5, 1);   // Insert at beginning
+    display();
+
+    insertAtPosition(100,
